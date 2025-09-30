@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="description" content="Gestor de tareas con geolocalización y funcionalidad offline">
+    
+    <title>Task Manager PWA</title>
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- iOS Support -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Task Manager">
+    <link rel="apple-touch-icon" href="assets/icons/icon-152x152.png">
+    
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- SPLASH SCREEN -->
+    <div id="splash-screen">
+        <div class="splash-logo">📋</div>
+        <div class="splash-text">Task Manager</div>
+        <div class="splash-subtitle">Gestión inteligente de tareas</div>
+        <div class="loader"></div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="app">
+        <!-- HEADER -->
+        <header>
+            <h1>📋 Task Manager PWA</h1>
+            <div class="status">
+                <span class="status-badge online" id="connection-status">
+                    <span id="status-icon">🟢</span>
+                    <span id="status-text">Conectando...</span>
+                </span>
+                <span class="status-badge location" id="location-status">
+                    <span>📍</span>
+                    <span id="location-text">Sin ubicación</span>
+                </span>
+            </div>
+        </header>
+
+        <!-- TASK INPUT -->
+        <div class="task-input-section">
+            <h3 style="margin-bottom: 15px; color: #1f2937;">➕ Nueva Tarea</h3>
+            <form id="task-form">
+                <div class="input-group">
+                    <label for="task-title">Título *</label>
+                    <input type="text" id="task-title" placeholder="Ej: Comprar víveres" required>
+                </div>
+                <div class="input-group">
+                    <label for="task-description">Descripción</label>
+                    <textarea id="task-description" placeholder="Describe tu tarea..."></textarea>
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="btn-primary">
+                        <span>💾</span>
+                        Guardar Tarea
+                    </button>
+                    <button type="button" class="btn-secondary" id="add-location-btn">
+                        <span>📍</span>
+                        Ubicación
+                    </button>
+                    <button type="button" class="btn-secondary" id="take-photo-btn">
+                        <span>📷</span>
+                        Foto
+                    </button>
+                    <button type="button" class="btn-secondary" id="notify-btn">
+                        <span>🔔</span>
+                        Notificar
+                    </button>
+                    <button type="button" class="btn-secondary" id="battery-btn">
+                        <span>🔋</span>
+                        Batería
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- TASKS LIST -->
+        <div class="tasks-section">
+            <div class="tasks-header">
+                <h2>📝 Mis Tareas</h2>
+                <span class="task-count" id="task-count">0</span>
+            </div>
+            <div id="tasks-list">
+                <div class="empty-state">
+                    <div class="empty-state-icon">📭</div>
+                    <p>No hay tareas aún. ¡Crea tu primera tarea!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SSR LINK -->
+        <div class="ssr-link-section">
+            <a href="/ssr" target="_blank" class="ssr-link">
+                🖥️ Ver demo de Server-Side Rendering (SSR)
+            </a>
+        </div>
+    </div>
+
+    <!-- INSTALL PROMPT -->
+    <div id="install-prompt">
+        <div class="install-icon">📱</div>
+        <div class="install-content">
+            <div class="install-title">Instalar App</div>
+            <div class="install-text">Instala esta aplicación para acceso rápido</div>
+        </div>
+        <div class="install-actions">
+            <button class="btn-primary" id="install-btn" style="min-width: 80px;">Instalar</button>
+            <button class="btn-secondary" id="dismiss-btn" style="min-width: 60px;">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/db.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/hardware.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
