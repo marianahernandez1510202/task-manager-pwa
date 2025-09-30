@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Iconos PWA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .canvas-container {
+            text-align: center;
+            margin: 20px 0;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        canvas {
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            max-width: 100%;
+        }
+        .controls {
+            margin: 20px 0;
+        }
+        .control-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        .size-list {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .size-item {
+            padding: 8px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Generador de Iconos PWA</h1>
+        <p class="subtitle">Crea todos los iconos necesarios para tu PWA en segundos</p>
+
+        <div class="info-box">
+            <strong>📝 Instrucciones:</strong>
+            <ol>
+                <li>Personaliza el emoji, texto y colores</li>
+                <li>Haz clic en "Generar Iconos"</li>
+                <li>Se descargarán automáticamente todos los tamaños</li>
+                <li>Coloca los archivos en <code>assets/icons/</code></li>
+            </ol>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label>Emoji (Icono):</label>
+                <input type="text" id="emoji" value="📋" maxlength="2">
+            </div>
+
+            <div class="control-group">
+                <label>Texto (opcional):</label>
+                <input type="text" id="text" value="" placeholder="Task">
+            </div>
+
+            <div class="control-group">
+                <label>Color de Fondo:</label>
+                <input type="color" id="bgColor" value="#667eea">
+            </div>
+
+            <div class="control-group">
+                <label>Color del Texto:</label>
+                <input type="color" id="textColor" value="#ffffff">
+            </div>
+
+            <div class="control-group">
+                <label>Forma:</label>
+                <select id="shape">
+                    <option value="rounded">Redondeado</option>
+                    <option value="circle">Círculo</option>
+                    <option value="square">Cuadrado</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="canvas-container">
+            <h3>Vista Previa (512x512)</h3>
+            <canvas id="preview" width="512" height="512"></canvas>
+        </div>
+
+        <div style="text-align: center; margin: 20px 0;">
+            <button onclick="generateIcons()">🎨 Generar Todos los Iconos</button>
+            <button onclick="updatePreview()">👁️ Actualizar Vista Previa</button>
+        </div>
+
+        <div class="warning-box">
+            <strong>⚠️ Importante:</strong> Los iconos se descargarán uno por uno. Acepta todas las descargas en tu navegador.
+        </div>
+
+        <div class="size-list">
+            <h3>📦 Tamaños que se generarán:</h3>
+            <div class="size-item">
+                <span>icon-72x72.png</span>
+                <span>72x72 px</span>
+            </div>
+            <div class="size-item">
+                <span>icon-96x96.png</span>
+                <span>96x96 px</span>
+            </div>
+            <div class="size-item">
+                <span>icon-128x128.png</span>
+                <span>128x128 px</span>
+            </div>
+            <div class="size-item">
+                <span>icon-144x144.png</span>
+                <span>144x144 px</span>
+            </div>
+            <div class="size-item">
+                <span>icon-152x152.png</span>
+                <span>152x152 px</span>
+            </div>
+            <div class="size-item">
+                <span>icon-192x192.png</span>
+                <span>192x192 px</span>
+            </div>
+            <div class="size-item">
+                <span>icon-384x384.png</span>
+                <span>384x384 px</span>
+            </div>
+            <div class="size-item">
+                <span>icon-512x512.png</span>
+                <span>512x512 px</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+
+        function drawIcon(canvas, size) {
+            const ctx = canvas.getContext('2d');
+            const emoji = document.getElementById('emoji').value || '📋';
+            const text = document.getElementById('text').value;
+            const bgColor = document.getElementById('bgColor').value;
+            const textColor = document.getElementById('textColor').value;
+            const shape = document.getElementById('shape').value;
+
+            // Limpiar canvas
+            ctx.clearRect(0, 0, size, size);
+
+            // Fondo
+            ctx.fillStyle = bgColor;
+            
+            if (shape === 'circle') {
+                ctx.beginPath();
+                ctx.arc(size/2, size/2, size/2, 0, Math.PI * 2);
+                ctx.fill();
+            } else if (shape === 'rounded') {
+                const radius = size * 0.15;
+                ctx.beginPath();
+                ctx.moveTo(radius, 0);
+                ctx.lineTo(size - radius, 0);
+                ctx.quadraticCurveTo(size, 0, size, radius);
+                ctx.lineTo(size, size - radius);
+                ctx.quadraticCurveTo(size, size, size - radius, size);
+                ctx.lineTo(radius, size);
+                ctx.quadraticCurveTo(0, size, 0, size - radius);
+                ctx.lineTo(0, radius);
+                ctx.quadraticCurveTo(0, 0, radius, 0);
+                ctx.fill();
+            } else {
+                ctx.fillRect(0, 0, size, size);
+            }
+
+            // Emoji
+            ctx.fillStyle = textColor;
+            ctx.font = `${size * 0.5}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            if (text) {
+                ctx.fillText(emoji, size/2, size * 0.4);
+                ctx.font = `bold ${size * 0.15}px Arial`;
+                ctx.fillText(text, size/2, size * 0.7);
+            } else {
+                ctx.fillText(emoji, size/2, size/2);
+            }
+        }
+
+        function updatePreview() {
+            const canvas = document.getElementById('preview');
+            drawIcon(canvas, 512);
+        }
+
+        function generateIcons() {
+            sizes.forEach(size => {
+                setTimeout(() => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = size;
+                    canvas.height = size;
+                    drawIcon(canvas, size);
+
+                    canvas.toBlob((blob) => {
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `icon-${size}x${size}.png`;
+                        a.click();
+                        URL.revokeObjectURL(url);
+                    });
+                }, size * 10);
+            });
+
+            alert('✅ Generando ' + sizes.length + ' iconos. Revisa tus descargas.');
+        }
+
+        // Vista previa inicial
+        updatePreview();
+
+        // Actualizar en cambios
+        document.querySelectorAll('input, select').forEach(el => {
+            el.addEventListener('input', updatePreview);
+        });
+    </script>
+</body>
+</html>
