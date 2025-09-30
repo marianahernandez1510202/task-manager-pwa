@@ -1,4 +1,5 @@
 // Database Manager - IndexedDB 
+
 class DatabaseManager {
   constructor() {
     this.dbName = 'TaskManagerDB';
